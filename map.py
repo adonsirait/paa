@@ -16,28 +16,18 @@ class map:
         self.road_width = 20
         self.simpang = []
         self.jarak = 10
-        self.corner = [Image.open("env/cornerL.png").resize((20,20)),Image.open("env/cornerR.png").resize((20,20))]
-        self.jalan = [Image.open("env/jalanx.png"),Image.open("env/jalany.jpg")]
-        self.buildings = [
-            Image.open("building/kecil5.png").resize((50,30)),
-            Image.open("building/kecil7.png").resize((50,30)), 
-            Image.open("building/kecil2.png").resize((100,50)), 
-            Image.open("building/besar1.jpg").resize((100,50)),
-            Image.open("building/house.jpg").resize((20,10)),
-            Image.open("building/kolam.png").resize((20,20))
+        self.bangunan = [
+            Image.open("bangunan/kecil5.png").resize((50,30)),
+            Image.open("bangunan/kecil7.png").resize((50,30)), 
+            Image.open("bangunan/kecil2.png").resize((50,50)), 
+            Image.open("bangunan/besar1.jpg").resize((100,50)),
+            Image.open("bangunan/house.jpg").resize((5,5)),
             ]
-        self.buildings2 = [
-            Image.open("building/medium2-y.jpg").resize((30,50)), 
-            Image.open("building/large-y.jpg").resize((50,100)),
-            Image.open("building/house.jpg").resize((10,20)),
-            Image.open("building/large2-y.jpg").resize((50,100)),
-            Image.open("building/small-x.jpg").resize((20,20))
-            ]
-        self.env = [
-            Image.open("env/treeA.jpg").resize((20,20)),
-            Image.open("env/bushA.png").resize((20,20)), 
-            Image.open("env/bushB.jpg").resize((20,20)), 
-            Image.open("env/batuA.jpg").resize((20,20))
+        self.tumbuhan = [
+            Image.open("tumbuhan/treeA.jpg").resize((20,20)),
+            Image.open("tumbuhan/bushA.png").resize((20,20)), 
+            Image.open("tumbuhan/bushB.jpg").resize((20,20)), 
+            Image.open("tumbuhan/batuA.jpg").resize((20,20))
             ]
         self.map = Image.new("RGBA",(self.width, self.height ), "gray" )
         self.mapDraw = ImageDraw.Draw(self.map)
@@ -45,8 +35,7 @@ class map:
     #Fungsi limit ini untuk membatasi posisi x dan y agar tidak keluar dari map
     def limitX(self, x) : return 0 if x <= 0 else (x if x < self.width else self.width )
     def limitY(self, y) : return 0 if y <= 0 else (y if y < self.height else self.height )
-    #Fungsi untuk membuat jalan , dimulai dari titik 0,0
-    #Menggunakan metode rekursif    
+    #Fungsi untuk membuat jalan , dimulai dari titik 0,0 Menggunakan metode rekursif    
     def makeRoads(self, pos, direction):
         self.len += 1
         if self.len > 150 and (pos[0]<=0 or pos[0]>=self.width or pos[1] <= 0 or pos[1] >=self.height ): return
@@ -84,7 +73,7 @@ class map:
         self.len = 0
         self.lastVertex = (random.randrange(0, self.width, self.road_len), random.choice([0, self.height]))
         self.lastVertex2 = (random.randrange(0, self.width, self.road_len), random.choice([0, self.height]))
-        self.map = Image.new("RGBA",(self.width, self.height ), (100,100,100) )
+        self.map = Image.new("RGBA", (self.width, self.height), (150, 150, 150))
         self.mapDraw = ImageDraw.Draw(self.map)
         self.makeRoads(self.lastVertex, "y")
         #Save map
@@ -98,14 +87,13 @@ class map:
     def generateBuilding(self, pos):
         x = pos[0][0]
         #titik paling atas area
-        #Fungsi ini untuk mengembalikan asset / gambar bangunan yang muat dengan area yang sekarang ingin digenerate
-        #BangunanX berarti menyamping gambarnya
+        #Fungsi ini untuk mengembalikan asset / gambar bangunan yang muat dengan area yang sekarang ingin digenerate BangunanX berarti menyamping gambarnya
         def getBangunanX(x):
-            return [bangunan for bangunan in self.buildings if bangunan.size[0] + x < pos[1][0]-self.padding]
+            return [bangunan for bangunan in self.bangunan if bangunan.size[0] + x < pos[1][0]-self.padding]
         #Fungsi ini untuk mengembalikan asset / gambar bangunan yang muat dengan area yang sekarang ingin digenerate
         #BangunanY berarti vertical atau keatas
         def getBangunanY(x,y):
-            return [bangunan for bangunan in self.env if bangunan.size[0] + x < pos[1][0]-self.padding and bangunan.size[1] + y < pos[1][1]-50]
+            return [bangunan for bangunan in self.tumbuhan if bangunan.size[0] + x < pos[1][0]-self.padding and bangunan.size[1] + y < pos[1][1]-50]
         
         while x < pos[1][0]:
             #Kandidat bangunan yang muat utk diletakkan

@@ -1,6 +1,6 @@
 # Desain
 
-Nama Anngota: <H1>
+Nama Anngota: <br>
 1. Obi Luter Sihombing (2201020066)<br>
 2. Adon Alviandre Sirait (2201020074)<br>
 
